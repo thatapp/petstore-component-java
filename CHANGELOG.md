@@ -1,0 +1,24 @@
+## 1.0.10 (November 22, 2026)
+* Read the JAX-RS polling response with the JSON parser supplied by Sailor 5.0.1.
+
+## 1.0.9 (March 18, 2026)
+* Update Sailor to 5.0.1
+
+## 1.0.8 (November 18, 2025)
+* Update Sailor to 5.0.0
+
+## 1.0.7 (July 07, 2023)
+* Bumped Sailor to 4.0.1
+
+## 1.0.6 (May 11, 2022)
+* Made an automated vulnerability check run in CI/CD
+
+## 1.0.5 (May 6, 2022)
+* Add an automated vulnerability check
+
+## 1.0.4 (April 08, 2022)
+* Updated the Sailor version to 3.3.9
+
+## 1.0.3 (March 16, 2022)
+* Updated the sailor version to 3.3.8
+* Add a component pusher to Docker hub

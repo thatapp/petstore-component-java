@@ -1,21 +1,22 @@
 package io.elastic.petstore.triggers;
 
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.Function;
 import io.elastic.api.Message;
-import io.elastic.api.Module;
 import io.elastic.petstore.HttpClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+
 
 /**
  * Trigger to get pets by status.
  */
-public class GetPetsByStatus implements Module {
+public class GetPetsByStatus implements Function {
     private static final Logger logger = LoggerFactory.getLogger(GetPetsByStatus.class);
 
     /**
