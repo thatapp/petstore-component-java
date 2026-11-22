@@ -1,3 +1,6 @@
+## 1.0.11 (November 22, 2026)
+* Mark ID and category as optional in the Create a Pet result. The demo service acknowledges a new pet with its name and status.
+
 ## 1.0.10 (November 22, 2026)
 * Read the JAX-RS polling response with the JSON parser supplied by Sailor 5.0.1.
 
