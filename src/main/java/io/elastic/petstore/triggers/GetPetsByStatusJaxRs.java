@@ -1,23 +1,26 @@
 package io.elastic.petstore.triggers;
 
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.Function;
+import io.elastic.api.JSON;
 import io.elastic.api.Message;
-import io.elastic.api.Module;
 import io.elastic.petstore.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 /**
  * Trigger to get pets by status.
  */
-public class GetPetsByStatusJaxRs implements Module {
+public class GetPetsByStatusJaxRs implements Function {
     private static final Logger logger = LoggerFactory.getLogger(GetPetsByStatusJaxRs.class);
 
     /**
@@ -42,13 +45,15 @@ public class GetPetsByStatusJaxRs implements Module {
 
         logger.info("About to find pets by status {}", status.getString());
 
-        final JsonArray pets = ClientBuilder.newClient()
-                .target(Constants.PETSTORE_API_BASE_URL)
-                .path(Constants.FIND_PETS_BY_STATUS_PATH)
-                .queryParam("status", status.getString())
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .header(Constants.API_KEY_HEADER, apiKey.getString())
-                .get(JsonArray.class);
+        final Client client = ClientBuilder.newClient();
+        final JsonArray pets;
+        try {
+            final WebTarget endpoint = client.target(Constants.PETSTORE_API_BASE_URL)
+                    .path(Constants.FIND_PETS_BY_STATUS_PATH);
+            pets = findPets(endpoint, status.getString(), apiKey.getString());
+        } finally {
+            client.close();
+        }
 
         logger.info("Got {} pets", pets.size());
 
@@ -64,5 +69,13 @@ public class GetPetsByStatusJaxRs implements Module {
 
         // emitting the message to the platform
         parameters.getEventEmitter().emitData(data);
+    }
+
+    static JsonArray findPets(WebTarget endpoint, String status, String apiKey) {
+        final String response = endpoint.queryParam("status", status)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .header(Constants.API_KEY_HEADER, apiKey)
+                .get(String.class);
+        return JSON.parseArray(response);
     }
 }
